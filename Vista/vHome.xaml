@@ -3,19 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="bguallasaminS5.Vista.vHome"
              Title="vHome">
+
+    <ContentPage.Resources>
+        <Style x:Key="btnStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="BorderColor" Value="Black"/>
+            <Setter Property="BorderWidth" Value="1"/>
+        </Style>
+    </ContentPage.Resources>
     <VerticalStackLayout
         Padding="20"
         Spacing="20">
         <Label 
-            Text="Semana 5 SQLITE"
+            Text="SEMANA 5 SQLITE"
+            FontSize="30"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Entry
-            x:Name="txtNombre"
-            Placeholder="Nombre"
-            VerticalOptions="Center"/>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -24,43 +33,93 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Entry
+                x:Name="txtNombre"
+                Placeholder="Nombre"
+                VerticalOptions="Center"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"/>
             <Button
                 x:Name="btnInsertar"
+                Style="{StaticResource btnStyle}"
                 Text="Insertar"
-   
                 VerticalOptions="Center" 
                 Clicked="btnInsertar_Clicked"
                 Grid.Row="0"
-                Grid.Column="0"/>
+                Grid.Column="2"
+                Grid.ColumnSpan="3"/>
             <Label x:Name="statusMessage"
                    FontSize="18"
                    TextColor="Red"
                    Grid.Row="1"
-                   Grid.Column="0"/>
-            <Button x:Name="btnLiustar"
-                   Text="Listar ¨Persona"
-                  Clicked="btnLiustar_Clicked"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"/>
+            <Button x:Name="btnListar"
+                    Style="{StaticResource btnStyle}"
+                    Text="Listar Persona"
+                    Clicked="btnListar_Clicked"
                     Grid.Row="2"
-                    Grid.Column="0"/>
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"/>
             <CollectionView x:Name="listPersonas"
-                            Grid.Row="3">
+                            SelectionMode="Single"
+                            SelectionChanged="ListPersonas_SelectionChanged"
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Label
+                        <Border 
+                            Stroke="LightGray" 
+                            StrokeThickness="1" 
+                            Padding="10" 
+                            Margin="5" 
+                            BackgroundColor="White" 
+                            StrokeShape="RoundRectangle 10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                HorizontalOptions="Center"
                                 Text="{Binding Id}"
                                 Grid.Column="0"/>
-                            <Label Text="{Binding Nombre}"
+                                <Label Text="{Binding Nombre}"
                                 Grid.Column="1"/>
-                        </Grid>
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <Button
+                x:Name="btnActualizar"
+                Style="{StaticResource btnStyle}"
+                Text="Actualizar Persona"
+                Clicked="btnActualizar_Clicked"
+                Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="1"/>
+            <Button
+                x:Name="btnEliminar"
+                Style="{StaticResource btnStyle}"
+                Text="Eliminar Persona"
+                Clicked="btnEliminar_Clicked"
+                Grid.Row="4"
+                Grid.Column="1"
+                Grid.ColumnSpan="1"/>
+            <Button
+                Text="Limpiar"
+                Style="{StaticResource btnStyle}"
+                Clicked="btnLimpiar_Clicked"
+                Grid.Row="4"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"/>
+
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

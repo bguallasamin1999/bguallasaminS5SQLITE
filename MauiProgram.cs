@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using bguallasaminS5.Repositorio;
+using Microsoft.Extensions.Logging;
 
 namespace bguallasaminS5
 {
@@ -15,12 +16,12 @@ namespace bguallasaminS5
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
             string dbPath = FileAccesHelper.GetLocalFilePath("personas.db");
-            builder.Services.AddSingleton<Repositorio.PersonaRepositorio>
-                (s => ActivatorUtilities.CreateInstance<Repositorio.PersonaRepositorio>(s,dbPath));
-
+            builder.Services.AddSingleton<PersonaRepositorio>
+                (s => ActivatorUtilities.CreateInstance<PersonaRepositorio>(s,dbPath));
+/*
 #if DEBUG
             builder.Logging.AddDebug();
-#endif
+#endif*/
 
             return builder.Build();
         }

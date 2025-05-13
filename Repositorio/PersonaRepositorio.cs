@@ -10,43 +10,40 @@ namespace bguallasaminS5.Repositorio
 {
     public class PersonaRepositorio
     {
-        string dbPath;
-        private SQLiteConnection db;
+        string _dbPath;
+        private SQLiteConnection conn;
 
         public string statusMessage { get; set; }
+        
+        private void Init()
+        {
+            if (conn is not null)
+                return;
+                conn = new(_dbPath);
+                conn.CreateTable<Persona>();
+            
+        }
         public PersonaRepositorio(string path)
         {
-            dbPath = path;
+            _dbPath = path;
 
         }
-        private void Initialize()
+        public void insertarPersona(string nombre)
         {
-            if (db is not null)
-            {
-                return;
-                db = new(dbPath);
-                db.CreateTable<Persona>();
-            }
-        }
-        public void insertarPersona(string persona)
-        {
-            int resultado = 0;
+            int result = 0;
             try
             {
-                Initialize();
-                if (string.IsNullOrEmpty(persona))
-                {
-                    statusMessage = "El nombre no puede estar vacio";
-                    return;
-                }
-                Persona p = new() { Nombre = persona };
-                resultado = db.Insert(p);
-                statusMessage = resultado == 1 ? "Persona insertada correctamente" : "Error al insertar la persona";
+                Init();
+                if (string.IsNullOrEmpty(nombre))
+                    throw new Exception("Nombre requerido");
+                Persona p = new() { Nombre = nombre };
+                result = conn.Insert(p);
+                statusMessage = string.Format("{0} record(s) added (Nombre: {1})", result, nombre);
             }
             catch (Exception ex)
             {
 
-                statusMessage = $"Error: {ex.Message}";
+                statusMessage = string.Format("Failed to add {0}. Error: {1}", nombre, ex.Message);
             }
         }
         public List<Persona> obtenerPersonas()
@@ -54,8 +51,8 @@ namespace bguallasaminS5.Repositorio
 
             try
             {
-                Initialize();
-                return db.Table<Persona>().ToList();
+                Init();
+                return conn.Table<Persona>().ToList();
             }
             catch (Exception ex)
             {
@@ -64,10 +61,34 @@ namespace bguallasaminS5.Repositorio
             }
             return new List<Persona>();
         }
-
-        public void eliminarPersona(int persona)
+        public void eliminarPersona(int id)
         {
-
+            int result = 0;
+            try
+            {
+                Init();
+                result = conn.Delete<Persona>(id);
+                statusMessage = string.Format("{0} record(s) deleted (Id: {1})", result, id);
+            }
+            catch (Exception ex)
+            {
+                statusMessage = string.Format("Failed to delete {0}. Error: {1}", id, ex.Message);
+            }
         }
+        public void actualizarPersona(Persona persona)
+        {
+            int result = 0;
+            try
+            {
+                Init();
+                result = conn.Update(persona);
+                statusMessage = string.Format("{0} record(s) updated (Id: {1})", result, persona.Id);
+            }
+            catch (Exception ex)
+            {
+                statusMessage = string.Format("Failed to update {0}. Error: {1}", persona.Id, ex.Message);
+            }
+        }
+
     }
 }

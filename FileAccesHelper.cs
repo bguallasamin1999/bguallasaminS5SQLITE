@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bguallasaminS5
 {
-    internal class FileAccesHelper
+    public class FileAccesHelper
     {
         public static string GetLocalFilePath(string filename)
         {
